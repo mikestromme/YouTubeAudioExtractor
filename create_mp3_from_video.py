@@ -15,13 +15,12 @@ def run_demucs(input):
 
     while True:
         output = process.stdout.readline()
-        if output == '' and process.poll() is not none:
+        if output == '' and process.poll() is not None:
             break
         if output:
             # parse the output to get progress information
             # send progress back to the browser
-            progress = subprocess.run(['demucs', '-n', 'mdx_extra', input])  # extract progress from output  # extract progress from output
-            print(progress)  # for testing, you can print it out
+            print(output.strip())  # for testing, you can print it out
             #socketio.emit('update_progress', {'progress': progress})
 
 # ##############
@@ -29,7 +28,7 @@ def run_demucs(input):
 # ##############
 
 # Replace 'video_url' with the URL of the YouTube video you want to download
-video_url = 'https://youtu.be/BihcE44msEY?si=QJ431hbf3jjxBNST'
+video_url = 'https://youtu.be/mnce5gS8vfY?si=OFkS4DnsBP5h00kl'
 
 # Create a YouTube object
 yt = YouTube(video_url)
