@@ -6,7 +6,7 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
 # ##############
 
 # Replace 'video_url' with the URL of the YouTube video you want to download
-video_url = ''
+video_url = 'https://youtu.be/BihcE44msEY?si=QJ431hbf3jjxBNST'
 
 # Create a YouTube object
 yt = YouTube(video_url)
@@ -31,7 +31,7 @@ video_stream.download(output_path='downloads')
 video_path = f'downloads\\{video_title}.mp4'
 
 # Replace 'output_audio_path' with the desired path for the audio file
-output_audio_path = f'C:\\Users\\mikes\\Documents\\Development\\Python\\YouTubeAudioExtractor\\extracted_audio\\{video_title}.mp3'
+output_audio_path = f'extracted_audio\\{video_title}.mp3'
 
 # Extract audio from the video
 ffmpeg_extract_audio(video_path, output_audio_path)
