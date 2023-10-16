@@ -7,21 +7,21 @@ import subprocess
 # #############
 # create stems
 # #############
-def run_demucs():
-    process = subprocess.Popen(['demucs', '-n', 'mdx_extra', 'input/Barracuda.mp3'], 
+def run_demucs(input):
+    process = subprocess.Popen(['demucs', '-n', 'mdx_extra', input], 
                                stdout=subprocess.PIPE, 
                                stderr=subprocess.STDOUT, 
                                universal_newlines=True)
 
     while True:
         output = process.stdout.readline()
-        if output == '' and process.poll() is not None:
+        if output == '' and process.poll() is not none:
             break
         if output:
-            # Parse the output to get progress information
-            # Send progress back to the browser
-            progress = subprocess.run(['demucs', '-n', 'mdx_extra', 'input/Barracuda.mp3'])  # Extract progress from output  # Extract progress from output
-            #print(progress)  # For testing, you can print it out
+            # parse the output to get progress information
+            # send progress back to the browser
+            progress = subprocess.run(['demucs', '-n', 'mdx_extra', input])  # extract progress from output  # extract progress from output
+            print(progress)  # for testing, you can print it out
             #socketio.emit('update_progress', {'progress': progress})
 
 # ##############
@@ -58,3 +58,7 @@ output_audio_path = f'extracted_audio\\{video_title}.mp3'
 
 # Extract audio from the video
 ffmpeg_extract_audio(video_path, output_audio_path)
+
+# run demucs
+input =  f'extracted_audio\\{video_title}.mp3'
+run_demucs(input)
