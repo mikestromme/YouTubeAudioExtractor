@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Video Processor</title>
+</head>
+<body>
+    <form id="url-form">
+        <input type="text" id="youtube-url" placeholder="Enter YouTube URL">
+        <button type="button" id="process-button">Process</button>
+    </form>
+    <a href="/download" id="download-link" style="display:none;">Download Processed File</a>
+
+
+    <script>
+        document.getElementById('process-button').addEventListener('click', async () => {
+            const youtubeURL = document.getElementById('youtube-url').value;
+            
+            const response = await fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ youtube_url: youtubeURL }),
+            });
+    
+            const data = await response.json();
+    
+            if (data.status === 'File Processed') {
+                document.getElementById('download-link').style.display = 'block';
+            }
+        });
+    </script>
+
+
+
+</body>
+</html>
