@@ -42,10 +42,12 @@ def process_file():
     # ##################
 
     # Replace 'video_path' with the path to your downloaded video file
-    video_path = f'downloads\\{video_title}.mp4'
+    #video_path = f'downloads\\{video_title}.mp4'
+    video_path = os.path.join('downloads', f'{video_title}.mp4')
 
     # Replace 'output_audio_path' with the desired path for the audio file
-    output_audio_path = f'extracted_audio\\{video_title}.mp3'
+    #output_audio_path = f'extracted_audio\\{video_title}.mp3'
+    output_audio_path = os.path.join('extracted_audio', f'{video_title}.mp4')
 
     # Extract audio from the video
     ffmpeg_extract_audio(video_path, output_audio_path)
