@@ -38,6 +38,10 @@ def getMP3(url):
 
     video_title = video_title.replace("'", "")
     video_title = video_title.replace("~", "")
+    video_title = video_title.replace(":", "")
+    video_title = video_title.replace("/", "")
+    video_title = video_title.replace("\"", "")
+    video_title = video_title.replace(",", "")
 
     # Choose the stream with audio (usually the first one)
     video_stream = yt.streams.filter(only_audio=True).first()
@@ -49,6 +53,13 @@ def getMP3(url):
     # ##################
     # create mp3
     # ##################
+
+    # video_path = video_path.replace("'", "")
+    # video_path = video_path.replace("~", "")
+    # video_path = video_path.replace(":", "")
+    # video_path = video_path.replace("/", "")
+    # video_path = video_path.replace("\"", "")
+    # video_path = video_path.replace(",", "")
 
     # Replace 'video_path' with the path to your downloaded video file
     video_path = f'downloads\\{video_title}.mp4'
@@ -66,6 +77,6 @@ def getMP3(url):
 
 if __name__ == '__main__':
     # get mp3
-    getMP3('https://youtu.be/FYyEJuXsA0g?si=sipDAB5Yl7XDjX8_')
+    getMP3('https://youtu.be/07rT1t2hkDU?si=9qkAeTIWTfWDLx9y')
     
     
