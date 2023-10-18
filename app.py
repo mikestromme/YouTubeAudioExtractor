@@ -59,7 +59,7 @@ def process_file():
 @app.route('/download')
 def download_file():
     # The filename should be whatever you processed
-    return send_from_directory('extracted_audio', 'Open Up Your Eyes - Tonic.mp3')
+    return send_from_directory('extracted_audio', 'Latest ChatGPT Update Lets You Do INSANE Things!.mp3')  # Link: https://youtu.be/6bihhz84CTw?si=QjoCxoZujNLnsZno
 
 if __name__ == '__main__':
     app.run(debug=True)
