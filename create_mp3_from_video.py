@@ -9,7 +9,7 @@ def getMP3(url):
     # create stems
     # #############
     def run_demucs(input):
-        process = subprocess.Popen(['demucs', '-n', 'mdx_extra', input], 
+        process = subprocess.Popen(['demucs', '-n', 'htdemucs_ft', input], 
                                 stdout=subprocess.PIPE, 
                                 stderr=subprocess.STDOUT, 
                                 universal_newlines=True)
@@ -68,18 +68,18 @@ def getMP3(url):
 
     # Replace 'output_audio_path' with the desired path for the audio file
     #output_audio_path = f'extracted_audio\\{video_title}.mp3'
-    output_audio_path = os.path.join('extracted_audio', f'{video_title}.mp4')
+    output_audio_path = os.path.join('extracted_audio', f'{video_title}.mp3')
 
     # Extract audio from the video
     ffmpeg_extract_audio(video_path, output_audio_path)
 
     # run demucs
     input =  f'extracted_audio\\{video_title}.mp3'
-    #run_demucs(input)
+    run_demucs(input)
 
 
 if __name__ == '__main__':
     # get mp3
-    getMP3('https://youtu.be/07rT1t2hkDU?si=9qkAeTIWTfWDLx9y')
+    getMP3('https://youtu.be/ToRoOlrn-XY?si=cJlkiPg5dPDBkP5Y')
     
     
