@@ -47,7 +47,7 @@ def process_file():
 
     # Replace 'output_audio_path' with the desired path for the audio file
     #output_audio_path = f'extracted_audio\\{video_title}.mp3'
-    output_audio_path = os.path.join('extracted_audio', f'{video_title}.mp4')
+    output_audio_path = os.path.join('extracted_audio', f'{video_title}.mp3')
 
     # Extract audio from the video
     ffmpeg_extract_audio(video_path, output_audio_path)
@@ -61,7 +61,7 @@ def process_file():
 @app.route('/download')
 def download_file():
     # The filename should be whatever you processed
-    return send_from_directory('extracted_audio', 'Latest ChatGPT Update Lets You Do INSANE Things!.mp3')  # Link: https://youtu.be/6bihhz84CTw?si=QjoCxoZujNLnsZno
+    return send_from_directory('extracted_audio', 'Tom Petty - You Wreck Me (Studio Version) HQ.mp3')  # Link: https://youtu.be/6bihhz84CTw?si=QjoCxoZujNLnsZno
 
 if __name__ == '__main__':
     app.run(debug=True)
