@@ -81,6 +81,6 @@ def getMP3(url):
 
 if __name__ == '__main__':
     # get mp3
-    getMP3('https://youtu.be/ToRoOlrn-XY?si=cJlkiPg5dPDBkP5Y')
+    getMP3('https://youtu.be/lv-cOIuJ1k0?si=Z_Dgz5slSE5pp3X_')
     
     
