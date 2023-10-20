@@ -74,7 +74,8 @@ def getMP3(url):
     ffmpeg_extract_audio(video_path, output_audio_path)
 
     # run demucs
-    input =  f'extracted_audio\\{video_title}.mp3'
+    #input =  f'extracted_audio\\{video_title}.mp3'
+    input = os.path.join('extracted_audio', f'{video_title}.mp3')
     run_demucs(input)
 
 
