@@ -46,15 +46,14 @@ def getMP3(url,output_folder):
     video_title = video_title.replace("\"", "")
     video_title = video_title.replace(",", "")
     video_title = video_title.replace("#", "")
+    video_title = video_title.replace("-", "")
 
     # Choose the stream with audio (usually the first one)
     audio_stream = yt.streams.filter(only_audio=True).first()
 
     # Download the audio stream
     audio_stream.download(output_path='downloads')
-    audio_stream.download(filename='temp_audio')
-
-    
+    audio_stream.download(filename='temp_audio')    
 
 
     # ##################
@@ -85,12 +84,15 @@ def getMP3(url,output_folder):
     audiofile.tag.album = "YouTube Rips"
     audiofile.tag.save()
 
+
+    os.remove(video_path) 
+
     return input
 
 
 if __name__ == '__main__':
     # get mp3
-    input = getMP3('https://youtube.com/shorts/j8e6bgTdWog?si=MCX0NqFg_itTwcB6','c:\\Users\\mikes\Desktop',)
+    input = getMP3('https://youtube.com/shorts/C8NPeUhrmnE?si=HVglTvmx4DnLlJUX','c:\\Users\\mstromme\Desktop',)
 
     # #############
     # create stems
