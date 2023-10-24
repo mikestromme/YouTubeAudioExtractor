@@ -3,13 +3,11 @@ from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
 import subprocess
 #from flask_socketio import SocketIO
 import os
+import eyed3
+from moviepy.editor import *
 
-def getMP3(url):
-    # #############
-    # create stems
-    # #############
-    def run_demucs(input):
-        process = subprocess.Popen(['demucs', '-n', 'htdemucs_ft', input], 
+def run_demucs(input):
+        process = subprocess.Popen(['demucs', '-n', 'htdemucs_ft', "--mp3_preset 2", input], 
                                 stdout=subprocess.PIPE, 
                                 stderr=subprocess.STDOUT, 
                                 universal_newlines=True)
@@ -21,8 +19,12 @@ def getMP3(url):
             if output:
                 # parse the output to get progress information
                 # send progress back to the browser
-                print(output.strip())  # for testing, you can print it out
+                print(output)  # for testing, you can print it out
                 #socketio.emit('update_progress', {'progress': progress})
+
+
+def getMP3(url,output_folder):
+      
 
     # ##############
     # download video
@@ -43,44 +45,56 @@ def getMP3(url):
     video_title = video_title.replace("/", "")
     video_title = video_title.replace("\"", "")
     video_title = video_title.replace(",", "")
+    video_title = video_title.replace("#", "")
 
     # Choose the stream with audio (usually the first one)
-    video_stream = yt.streams.filter(only_audio=True).first()
+    audio_stream = yt.streams.filter(only_audio=True).first()
 
     # Download the audio stream
-    video_stream.download(output_path='downloads')
+    audio_stream.download(output_path='downloads')
+    audio_stream.download(filename='temp_audio')
+
+    
 
 
     # ##################
     # create mp3
-    # ##################
-
-    # video_path = video_path.replace("'", "")
-    # video_path = video_path.replace("~", "")
-    # video_path = video_path.replace(":", "")
-    # video_path = video_path.replace("/", "")
-    # video_path = video_path.replace("\"", "")
-    # video_path = video_path.replace(",", "")
+    # ##################    
 
     # Replace 'video_path' with the path to your downloaded video file
-    #video_path = f'downloads\\{video_title}.mp4'
     video_path = os.path.join('downloads', f'{video_title}.mp4')
 
     # Replace 'output_audio_path' with the desired path for the audio file
-    #output_audio_path = f'extracted_audio\\{video_title}.mp3'
-    output_audio_path = os.path.join('extracted_audio', f'{video_title}.mp3')
+    output_audio_path = os.path.join(output_folder, f'{video_title}.mp3')
+
+
+    # Trim the downloaded audio using moviepy
+    #audio = audio_stream(output_audio_path)
+    #sub_audio = audio.subclip(396)
+    #sub_audio.write_audiofile(f"{output_audio_path}.mp3")
 
     # Extract audio from the video
     ffmpeg_extract_audio(video_path, output_audio_path)
 
-    # run demucs
-    #input =  f'extracted_audio\\{video_title}.mp3'
-    input = os.path.join('extracted_audio', f'{video_title}.mp3')
-    run_demucs(input)
+    input = os.path.join(output_folder, f'{video_title}.mp3')   
+
+    # add metadata tags
+    audiofile = eyed3.load(input) 
+    audiofile.tag.album_artist = "Various"
+    audiofile.tag.artist = "Various"
+    audiofile.tag.album = "YouTube Rips"
+    audiofile.tag.save()
+
+    return input
 
 
 if __name__ == '__main__':
     # get mp3
-    getMP3('https://youtu.be/ToRoOlrn-XY?si=cJlkiPg5dPDBkP5Y')
+    input = getMP3('https://youtube.com/shorts/j8e6bgTdWog?si=MCX0NqFg_itTwcB6','c:\\Users\\mikes\Desktop',)
+
+    # #############
+    # create stems
+    # #############
+    #run_demucs(input)
     
     

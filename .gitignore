@@ -2,4 +2,9 @@ myvenv
 downloads/
 extracted_audio/
 separated/
+build/
+dist/
+win*
+temp_audio
+*.cpython*
 
