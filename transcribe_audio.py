@@ -2,7 +2,7 @@ import speech_recognition as sr
 import subprocess
 
 # Specify the input audio file path (e.g., MP3) and output WAV file path
-input_audio_path = 'extracted_audio\\audio.mp3'
+input_audio_path = 'extracted_audio\\systems-thinking-voice-memo.mp3'
 output_audio_path = 'extracted_audio\\output.wav'
 
 # FFmpeg command to convert the input audio file to WAV format
