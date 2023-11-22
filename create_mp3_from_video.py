@@ -46,6 +46,7 @@ def getMP3(url,output_folder):
     video_title = video_title.replace("\"", "")
     video_title = video_title.replace(",", "")
     video_title = video_title.replace("#", "")
+    video_title = video_title.replace("?", "")
     #video_title = video_title.replace("-", "")
 
     # Choose the stream with audio (usually the first one)
@@ -92,7 +93,7 @@ def getMP3(url,output_folder):
 
 if __name__ == '__main__':
     # get mp3
-    input = getMP3('https://youtube.com/shorts/C8NPeUhrmnE?si=LAZ1T4r0JCZJ7sAm','c:\\Users\\mikes\Desktop',)
+    input = getMP3('https://youtu.be/WDSJobjxuVE?si=ispTJozCHswz6M6P','c:\\Users\\mikes\Desktop',)
 
     # #############
     # create stems
