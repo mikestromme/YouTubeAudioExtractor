@@ -5,22 +5,14 @@ import subprocess
 import os
 import eyed3
 from moviepy.editor import *
+from tqdm import tqdm
+import time
 
 def run_demucs(input):
-        process = subprocess.Popen(['demucs', '-n', 'htdemucs_ft', "--mp3_preset 2", input], 
-                                stdout=subprocess.PIPE, 
-                                stderr=subprocess.STDOUT, 
-                                universal_newlines=True)
-
-        while True:
-            output = process.stdout.readline()
-            if output == '' and process.poll() is not None:
-                break
-            if output:
-                # parse the output to get progress information
-                # send progress back to the browser
-                print(output)  # for testing, you can print it out
-                #socketio.emit('update_progress', {'progress': progress})
+               
+        subprocess.Popen(['demucs', '-n', 'htdemucs_ft', input], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+        
+   
 
 
 def getMP3(url,output_folder):
@@ -93,11 +85,13 @@ def getMP3(url,output_folder):
 
 if __name__ == '__main__':
     # get mp3
-    input = getMP3('https://youtu.be/WDSJobjxuVE?si=ispTJozCHswz6M6P','c:\\Users\\mikes\Desktop',)
+    #input = getMP3('https://youtu.be/WDSJobjxuVE?si=ispTJozCHswz6M6P','c:\\Users\\mstromme\Desktop',)
+
+    input = 'c:\\Users\\mstromme\\Desktop\\FUNKY DRUM FILL - Drum Lesson.mp3'
 
     # #############
     # create stems
     # #############
-    #run_demucs(input)
+    run_demucs(input)
     
     
