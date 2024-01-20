@@ -10,7 +10,20 @@ import time
 
 def run_demucs(input):
                
-        subprocess.Popen(['demucs', '-n', 'htdemucs_ft', input], stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+        process = subprocess.Popen(['demucs', '-n', 'htdemucs_ft', input], 
+                                stdout=subprocess.PIPE, 
+                                stderr=subprocess.STDOUT, 
+                                universal_newlines=True)
+
+        while True:
+            output = process.stdout.readline()
+            if output == '' and process.poll() is not None:
+                break
+            if output:
+                # parse the output to get progress information
+                # send progress back to the browser
+                print(output)  # for testing, you can print it out
+                #socketio.emit('update_progress', {'progress': progress})
         
    
 
@@ -85,13 +98,13 @@ def getMP3(url,output_folder):
 
 if __name__ == '__main__':
     # get mp3
-    #input = getMP3('https://youtu.be/WDSJobjxuVE?si=ispTJozCHswz6M6P','c:\\Users\\mstromme\Desktop',)
+    input = getMP3('https://youtu.be/2Fnt307dw4k?si=2yz9fb7BibbMjUb2','extracted_audio',)
 
-    input = 'c:\\Users\\mstromme\\Desktop\\FUNKY DRUM FILL - Drum Lesson.mp3'
+    #input = 'c:\\Users\\mikes\\Desktop\\FUNKY DRUM FILL - Drum Lesson.mp3'
 
     # #############
     # create stems
     # #############
-    run_demucs(input)
+    #run_demucs(input)
     
     
