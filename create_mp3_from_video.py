@@ -1,30 +1,9 @@
 from pytube import YouTube
 from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
-import subprocess
-#from flask_socketio import SocketIO
 import os
 import eyed3
 from moviepy.editor import *
-from tqdm import tqdm
-import time
-
-def run_demucs(input):
-               
-        process = subprocess.Popen(['demucs', '-n', 'htdemucs_ft', input], 
-                                stdout=subprocess.PIPE, 
-                                stderr=subprocess.STDOUT, 
-                                universal_newlines=True)
-
-        while True:
-            output = process.stdout.readline()
-            if output == '' and process.poll() is not None:
-                break
-            if output:
-                # parse the output to get progress information
-                # send progress back to the browser
-                print(output)  # for testing, you can print it out
-                #socketio.emit('update_progress', {'progress': progress})
-        
+from run_demucs import run_demucs 
    
 
 
@@ -41,18 +20,21 @@ def getMP3(url,output_folder):
     # Create a YouTube object
     yt = YouTube(video_url)
 
-    # Get the title of the video
-    video_title = yt.title
+    #replace characters from yt title
+    yt.title = yt.title.replace("@","")
+    yt.title = yt.title.replace(":","")
+    yt.title = yt.title.replace(",","")
+    yt.title = yt.title.replace(".","")
+    yt.title = yt.title.replace(" ","_")
+    yt.title = yt.title.replace("~","")
+    yt.title = yt.title.replace("#","")
+    yt.title = yt.title.replace("?","")
+    yt.title = yt.title.replace("'","")
+    yt.title = yt.title.replace('"',"")
+    yt.title = yt.title.replace('|',"")
 
-    video_title = video_title.replace("'", "")
-    video_title = video_title.replace("~", "")
-    video_title = video_title.replace(":", "")
-    video_title = video_title.replace("/", "")
-    video_title = video_title.replace("\"", "")
-    video_title = video_title.replace(",", "")
-    video_title = video_title.replace("#", "")
-    video_title = video_title.replace("?", "")
-    #video_title = video_title.replace("-", "")
+    # Get the title of the video
+    video_title = yt.title    
 
     # Choose the stream with audio (usually the first one)
     audio_stream = yt.streams.filter(only_audio=True).first()
@@ -98,9 +80,7 @@ def getMP3(url,output_folder):
 
 if __name__ == '__main__':
     # get mp3
-    input = getMP3('https://youtu.be/2Fnt307dw4k?si=2yz9fb7BibbMjUb2','extracted_audio',)
-
-    #input = 'c:\\Users\\mikes\\Desktop\\FUNKY DRUM FILL - Drum Lesson.mp3'
+    input = getMP3('https://youtu.be/N4F2weWYLlM?si=RCiNNBIdwZA-s0hd','extracted_audio')
 
     # #############
     # create stems
