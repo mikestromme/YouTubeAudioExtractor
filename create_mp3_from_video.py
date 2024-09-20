@@ -1,90 +1,71 @@
-from pytube import YouTube
-from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_audio
+from yt_dlp import YoutubeDL
+from yt_dlp.postprocessor.common import PostProcessor
 import os
-import eyed3
-from moviepy.editor import *
 from run_demucs import run_demucs 
-   
 
+def clean_filename(filename):
+    chars_to_replace = ['@', ':', ',', '~', '#', '?', "'", '"', '|', '/', '⧸']
+    for char in chars_to_replace:
+        filename = filename.replace(char, ' ')
+    return filename.strip()
 
-def getMP3(url,output_folder):
-      
+class FileNameCleanerPP(PostProcessor):
+    def run(self, info):
+        filename = info['filepath']
+        cleaned_filename = clean_filename(filename)
+        if filename != cleaned_filename:
+            if not os.path.exists(cleaned_filename):
+                os.rename(filename, cleaned_filename)
+                info['filepath'] = cleaned_filename
+            else:
+                self.to_screen(f'File {cleaned_filename} already exists. Skipping rename.')
+        return [], info
 
-    # ##############
-    # download video
-    # ##############
+def getMP3(url, output_folder):
+    # Ensure the output folder exists
+    os.makedirs(output_folder, exist_ok=True)
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }],
+        'outtmpl': os.path.join(output_folder, '%(title)s.%(ext)s'),
+        'keepvideo': True,
+    }
 
-    # Replace 'video_url' with the URL of the YouTube video you want to download
-    video_url = url
+    with YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(url, download=False)
+        video_title = clean_filename(info['title'])
+        final_filename = os.path.join(output_folder, f'{video_title}.mp3')
 
-    # Create a YouTube object
-    yt = YouTube(video_url)
+        if os.path.exists(final_filename):
+            print(f"File {final_filename} already exists. Skipping download.")
+            return final_filename
 
-    #replace characters from yt title
-    yt.title = yt.title.replace("@","")
-    yt.title = yt.title.replace(":","")
-    yt.title = yt.title.replace(",","")
-    yt.title = yt.title.replace(".","")
-    yt.title = yt.title.replace(" ","_")
-    yt.title = yt.title.replace("~","")
-    yt.title = yt.title.replace("#","")
-    yt.title = yt.title.replace("?","")
-    yt.title = yt.title.replace("'","")
-    yt.title = yt.title.replace('"',"")
-    yt.title = yt.title.replace('|',"")
+        ydl.download([url])
 
-    # Get the title of the video
-    video_title = yt.title    
+    # Delete the webm file
+    webm_filename = os.path.join(output_folder, f"{video_title}.webm")
+    if os.path.exists(webm_filename):
+        try:
+            os.remove(webm_filename)
+            print(f"Deleted webm file: {webm_filename}")
+        except Exception as e:
+            print(f"Error deleting webm file: {e}")
 
-    # Choose the stream with audio (usually the first one)
-    audio_stream = yt.streams.filter(only_audio=True).first()
-
-    # Download the audio stream
-    audio_stream.download(output_path='downloads')
-    audio_stream.download(filename='temp_audio')    
-
-
-    # ##################
-    # create mp3
-    # ##################    
-
-    # Replace 'video_path' with the path to your downloaded video file
-    video_path = os.path.join('downloads', f'{video_title}.mp4')
-
-    # Replace 'output_audio_path' with the desired path for the audio file
-    output_audio_path = os.path.join(output_folder, f'{video_title}.mp3')
-
-
-    # Trim the downloaded audio using moviepy
-    #audio = audio_stream(output_audio_path)
-    #sub_audio = audio.subclip(396)
-    #sub_audio.write_audiofile(f"{output_audio_path}.mp3")
-
-    # Extract audio from the video
-    ffmpeg_extract_audio(video_path, output_audio_path)
-
-    input = os.path.join(output_folder, f'{video_title}.mp3')   
-
-    # add metadata tags
-    audiofile = eyed3.load(input) 
-    audiofile.tag.album_artist = "Various"
-    audiofile.tag.artist = "Various"
-    audiofile.tag.album = "YouTube Rips"
-    audiofile.tag.save()
-
-
-    os.remove(video_path) 
-
-    return input
-
+    return final_filename
 
 if __name__ == '__main__':
     # get mp3
-    input = getMP3('https://youtu.be/N4F2weWYLlM?si=RCiNNBIdwZA-s0hd','extracted_audio')
+    output_path = r'C:\Users\mikes\Documents\Development\AI\YouTubeAudioExtractor\separated\htdemucs_ft\Input'
+    #input = getMP3('https://youtu.be/PjjNvjURS-s?si=7ypaDD90NpkOfI1r', 'downloads')  # rush song - has odd character in title - fixed
+    input = getMP3('https://youtu.be/eb3kAUQxinQ?si=oyyoprExg0uIsaM1', output_path)
+    print(f"Downloaded or found file: {input}")
 
+       
     # #############
     # create stems
     # #############
-    #run_demucs(input)
-    
-    
+    run_demucs(input)

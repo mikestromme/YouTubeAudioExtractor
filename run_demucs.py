@@ -25,7 +25,7 @@ def run_demucs(input):
 if __name__ == '__main__':
     
     #input_file = 'extracted_audio\\All of Me.mp3' 
-    input_file = 'C:\\Users\\mikes\\Documents\\Development\\Python\\AI\\YouTubeAudioExtractor\\extracted_audio\\I\'ll Stick Around.mp3'
+    input_file = r'C:\Users\mikes\Documents\Development\AI\YouTubeAudioExtractor\separated\htdemucs_ft\Input\3am Acoustic.mp3'
 
     #byte_string = input
     #decoded_string = byte_string.decode('utf-8')
